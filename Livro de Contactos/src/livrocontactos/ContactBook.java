@@ -13,6 +13,11 @@ public class ContactBook {
 		contacts = new Contact[INICIAL_SIZE];
 	}
 	
+	/** Iterador **/
+	public Iterator Iterator() {
+		return new ContactIterator(contacts, counter);
+	}
+	
 	/** Metodos auxiliares **/
 	private int searchIndex(String name) {
 		int i = 0;
