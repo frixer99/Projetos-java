@@ -66,31 +66,32 @@ public class ContactBook {
 	/** Remove o contacto da agenda, cujo nome é o dado
 		@pre: hasContact(name) **/
 	public void	removeContact(String name) {
-		contacts[searchIndex(name)] 
+		contacts[searchIndex(name)] = contacts[counter - 1];
+		counter--;
 	}
 	
 	/** Consulta o telefone do contacto associado a um dado nome
 		@pre: hasContact(name) **/
 	public int getPhone(String name) {
-		
+		return contacts[searchIndex(name)].getPhone();
 	}
 	
 	/** Consulta o e-mail do contacto associado a um dado nome
 		@pre: hasContact(name) **/
 	public String getEmail(String name) {
-		
+		return contacts[searchIndex(name)].getEmail();
 	}
 	
 	/** Altera o telefone do contacto com o nome dado
 		@pre: hasContact(name) **/
 	public void setPhone(String name, int phone) {
-		
+		contacts[searchIndex(name)].setPhone(phone);
 	}
 	
 	/** Altera o e-mail do contacto com o nome dado
 		@pre: hasContact(name) **/
 	public void setEmail(String name, String email) {
-		
+		contacts[searchIndex(name)].setEmail(email);
 	}
 	
 }
