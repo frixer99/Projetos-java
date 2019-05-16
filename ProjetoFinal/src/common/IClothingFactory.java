@@ -3,8 +3,6 @@
  */
 package common;
 
-import java.util.Collection;
-
 public interface IClothingFactory {
 	IPriceBuilder makeBasicPriceBuilder(double unitPrice, double shipping);
 	IPriceBuilder makeRangedPriceBuilder(double unitPrice, double shipping);
@@ -17,5 +15,5 @@ public interface IClothingFactory {
 	IClothing makeClothing(ClothingKind kind, String code, String descr, double weight, String type, String color, String size,
 			IPriceBuilder priceBuilder);
 
-	Collection<IClothing> makeClothingCollection(); // either List- or Array-based
+	IClothingCollection makeClothingCollection(); // either List- or Array-based
 }
