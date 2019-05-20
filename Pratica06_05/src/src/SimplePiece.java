@@ -8,6 +8,11 @@ public class SimplePiece extends AbstractPiece {
 	}
 	
 	public String toString() {
-		return description + " ; " + unitPrice + " ; " + shipping;
+		return code + "| " + description + "| " + type + "| " + color + "| " + size + "| " + unitPrice + "| " + shipping;
 	}
+	
+	public double unitShippingCost() {
+		return shipping;
+	}
+	
 }

@@ -1,6 +1,7 @@
 package src;
 
-public abstract class AbstractPiece {
+
+public abstract class AbstractPiece{
 	
 	protected String code;
 	protected String description;
@@ -51,7 +52,4 @@ public abstract class AbstractPiece {
 		return unitPrice;
 	}
 
-	public double unitShippingCost() {
-		return shipping;
-	}
 }
