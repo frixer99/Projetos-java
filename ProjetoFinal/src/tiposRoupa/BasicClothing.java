@@ -14,7 +14,7 @@ public class BasicClothing extends AbstractClothing {
 	}
 	
 	public String toString() {
-		String[] firstDescription = getDescription().split("(");
+		String[] firstDescription = getDescription().split("\\(");
 		return getCode() + "|" + firstDescription[0] + "|" + getType() + "|" + getColor() + "|" + 
 			   getSize() + "|" + unitPrice() + "|" + unitShippingCost();
 	}

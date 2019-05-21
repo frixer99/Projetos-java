@@ -11,4 +11,8 @@ public final class Constants {
 	public static final String CE = "CE";
 	public static final String LLMB = "LLMB";
 	
+	
+	public static final String EU = "EU";
+	public static final String NEU = "NEU";
+	public static final String WW = "WW";
 }

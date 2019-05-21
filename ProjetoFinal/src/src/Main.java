@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import common.IClothing;
 import common.IClothingCollection;
+import common.OrderRegion;
 import tiposRoupa.BasicClothing;
 import tiposRoupa.RangedClothing;
 import tiposRoupa.RegionalClothing;
@@ -16,14 +17,19 @@ public class Main {
 	public static final String RANGED_FILE = "ranged.csv";
 	public static final String REGIONAL_FILE = "regional.csv";
 	
+	public static IClothingCollection simpleClothing;
+	public static IClothingCollection rangedClothing;
+	public static IClothingCollection regionalClothing;
+	public static IClothingCollection order;
+	
 	public static void main(String[] args) {
-		IClothingCollection simpleClothing = new ClothingCollection();
-		IClothingCollection rangedClothing = new ClothingCollection();
-		IClothingCollection regionalClothing = new ClothingCollection();
-		IClothingCollection order = new ClothingCollection();
-		int[] dataSimple = load(simpleClothing, BASIC_FILE);
-		int[] dataRanged = load(rangedClothing, RANGED_FILE);
-		int[] dataRegional = load(regionalClothing, REGIONAL_FILE);
+		simpleClothing = new ClothingCollection();
+		rangedClothing = new ClothingCollection();
+		regionalClothing = new ClothingCollection();
+		order = new ClothingCollection();
+		int[] dataSimple = load(BASIC_FILE);
+		int[] dataRanged = load(RANGED_FILE);
+		int[] dataRegional = load(REGIONAL_FILE);
 		
 		boolean fileresults = printFileResults(dataSimple, dataRanged, dataRegional);
 		if(fileresults) {
@@ -44,7 +50,7 @@ public class Main {
 					printDataResults(dataSimple, dataRanged, dataRegional);
 					break;
 				case (Constants.ALE):
-					ale(scan);
+					ale();
 					break;
 				case (Constants.CE):
 
@@ -64,7 +70,7 @@ public class Main {
 		
 	}
 
-	private static int[] load(IClothingCollection collection, String file) {
+	private static int[] load(String file) {
 		int countAdd = 0;
 		int countError = 0;
 		int[] data = {-1, -1};
@@ -80,17 +86,19 @@ public class Main {
 					switch (file) {
 					case BASIC_FILE:
 						piece = simpleProcess(line);
+						simpleClothing.add(piece);
 						break;
 					case RANGED_FILE:
 						piece = rangedProcess(line);
+						rangedClothing.add(piece);
 						break;
 					case REGIONAL_FILE:
 						piece = regionalProcess(line);
+						regionalClothing.add(piece);
 						break;
 					default: // Nunca deve chegar aqui
 						piece = null;
 					}
-					collection.add(piece);
 					countAdd++;
 					
 				}catch(Exception e) { // NumberFormatException?
@@ -196,11 +204,76 @@ public class Main {
 		//TODO	
 	}
 	
-	private static void ale(Scanner scan) {
-		System.out.print("Código do produto:	");
+	private static void ale() {//Scanner scan
+		Scanner scan = new Scanner(System.in);
+		IClothing elem = null;
+		boolean admissible = false;
+		String region = "EU";
+		
+		System.out.print("Código do produto: ");
 		String code = scan.nextLine();
+		System.out.print("Quantidade de peças " + code + ": ");
+		int nrItems = scan.nextInt();
 		
+		if(simpleClothing.hasProduct(code)) {
+			elem = addBasicOrder(elem, code, nrItems);
+			admissible = true;
+			
+		}else if(rangedClothing.hasProduct(code)) {
+			elem = addRangedOrder(elem, code, nrItems);
+			admissible = true;
+			
+		}else if(regionalClothing.hasProduct(code)) {
+			System.out.println("Lote é do tipo regional");
+			System.out.print("Zona de envio (EU, NEU, WW):	");
+			region = scan.nextLine();
+
+			elem = addRegionalOrder(region, elem, code, nrItems);
+			admissible = true;
+			
+		}else {
+			System.out.println("Produto " + code + " não encontrado.");
+		}
+
+		if(admissible) {
+			System.out.println(nrItems + " unidades do produto " + code + " para a região " + region + 
+							   " totalizando o montante de " + elem.orderPrice() + "\nRegistar lote (S/N)? ");
+			String answer = scan.next().toUpperCase();
+			if(answer.equals("S")) {
+				order.add(elem);
+				System.out.println("Encomenda de lote " + nrItems + " unidades do produto " + code + " para a região "
+									+ region + " registada com sucesso.");
+			}else {
+				System.out.println("Operação cancelada.");
+			}
+		}
+	}
+	
+	private static IClothing addBasicOrder(IClothing elem, String code, int nrItems) {
+		System.out.println("Lote é do tipo simples");
+		elem = simpleClothing.getProduct(code);
+		elem.setNrItemsOrdered(nrItems);
+		return elem;
+
+	}
+	
+	private static IClothing addRangedOrder(IClothing elem, String code, int nrItems) {
+		System.out.println("Lote é do tipo por escalão");
+		elem = rangedClothing.getProduct(code);
+		elem.setNrItemsOrdered(nrItems);
+		return elem;
+	}
+	
+	private static IClothing addRegionalOrder(String region, IClothing elem, String code, int nrItems) {
+		elem = regionalClothing.getProduct(code);
+		elem.setNrItemsOrdered(nrItems);
 		
+		switch(region.toUpperCase()) {
+		case(Constants.EU):elem.setOrderRegion(OrderRegion.toOrderRegion("EU"));
+		case(Constants.NEU):elem.setOrderRegion(OrderRegion.toOrderRegion("NEAR-EU"));
+		case(Constants.WW):elem.setOrderRegion(OrderRegion.toOrderRegion("WORLDWIDE"));
+		}
+		return elem;
 	}
 	
 }

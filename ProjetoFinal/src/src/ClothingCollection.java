@@ -58,11 +58,11 @@ public class ClothingCollection implements IClothingCollection {
 
 	public IClothing getProduct(String code) {
 		IClothing clothing = null;
-		Iterator<IClothing> iterator = iterator();
+		Iterator<IClothing> clothingIterator = iterator();
 		boolean found = false;
 		
-		while(iterator.hasNext() && !found) {
-			clothing = iterator.next();
+		while(clothingIterator.hasNext() && !found) {
+			clothing = clothingIterator.next();
 			if( clothing.getCode().equals(code) ) {
 				found = true;
 			}	
@@ -71,7 +71,7 @@ public class ClothingCollection implements IClothingCollection {
 	}
 
 	public Iterator<IClothing> iterator() {	
-		ClothingIterator itr = new ClothingIterator(clothes, counter);
+		Iterator<IClothing> itr = new ClothingIterator(clothes, counter);
 		return itr;
 	}
 
