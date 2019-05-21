@@ -11,6 +11,7 @@ import tiposRoupa.RangedClothing;
 import tiposRoupa.RegionalClothing;
 
 public class Main {
+	
 	public static final String BASIC_FILE = "basic.csv";
 	public static final String RANGED_FILE = "ranged.csv";
 	public static final String REGIONAL_FILE = "regional.csv";
@@ -19,6 +20,7 @@ public class Main {
 		IClothingCollection simpleClothing = new ClothingCollection();
 		IClothingCollection rangedClothing = new ClothingCollection();
 		IClothingCollection regionalClothing = new ClothingCollection();
+		IClothingCollection order = new ClothingCollection();
 		int[] dataSimple = load(simpleClothing, BASIC_FILE);
 		int[] dataRanged = load(rangedClothing, RANGED_FILE);
 		int[] dataRegional = load(regionalClothing, REGIONAL_FILE);
@@ -42,7 +44,7 @@ public class Main {
 					printDataResults(dataSimple, dataRanged, dataRegional);
 					break;
 				case (Constants.ALE):
-
+					ale(scan);
 					break;
 				case (Constants.CE):
 
@@ -191,11 +193,14 @@ public class Main {
 	}
 
 	private static void ltp() {
-		
+		//TODO	
+	}
+	
+	private static void ale(Scanner scan) {
+		System.out.print("Código do produto:	");
+		String code = scan.nextLine();
 		
 		
 	}
-	
-	
 	
 }

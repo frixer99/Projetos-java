@@ -13,6 +13,7 @@ public class RegionalPrice extends AbstractPrice {
 	private OrderRegion region;
 
 	public RegionalPrice(double unitPrice, double EU1, double EUadd, double NEU1, double NEUadd, double WW1 ,double WWadd) {
+		this.unitPrice = unitPrice;
 		this.EU1 = EU1;
 		this.EUadd = EUadd;
 		this.NEU1 = NEU1;

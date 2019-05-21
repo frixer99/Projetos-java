@@ -7,6 +7,10 @@ public abstract class AbstractPrice implements IPriceBuilder {
 	protected double unitPrice;
 	protected int nrItems;
 	
+	public AbstractPrice() {
+		this.nrItems = 0;
+	}
+	
 	public void setNrItemsOrdered(int nrItems) {
 		this.nrItems = nrItems;
 	}

@@ -42,46 +42,61 @@ public class ClothingCollection implements IClothingCollection {
 		return counter == 0;
 	}
 
-	@Override
 	public boolean hasProduct(String code) {
-		// TODO Auto-generated method stub
-		return false;
+		IClothing clothing;
+		Iterator<IClothing> iterator = iterator();
+		boolean found = false;
+		
+		while(iterator.hasNext() && !found) {
+			clothing = iterator.next();
+			if( clothing.getCode().equals(code) ) {
+				found = true;
+			}	
+		}
+		return found;
 	}
 
-	@Override
 	public IClothing getProduct(String code) {
-		// TODO Auto-generated method stub
-		return null;
+		IClothing clothing = null;
+		Iterator<IClothing> iterator = iterator();
+		boolean found = false;
+		
+		while(iterator.hasNext() && !found) {
+			clothing = iterator.next();
+			if( clothing.getCode().equals(code) ) {
+				found = true;
+			}	
+		}
+		return clothing;
 	}
 
-	@Override
-	public Iterator<IClothing> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+	public Iterator<IClothing> iterator() {	
+		ClothingIterator itr = new ClothingIterator(clothes, counter);
+		return itr;
 	}
 
-	@Override
+	/**
+	 * ONLY ORDER METHODS
+	 */
+	
 	public int totalNumberOfItems() {
-		return size();
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
-	@Override
 	public double sumPrice() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public double totalPrice() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
 	public double discount() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
 	
 }

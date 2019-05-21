@@ -41,7 +41,7 @@ public class RangedPrice extends AbstractPrice {
 	}
 
 	public double orderPrice() {
-		return (nrItemsOrdered() * unitPrice()) * discount() + orderShippingCost();
+		return (nrItemsOrdered() * unitPrice()) * (1 - discount()) + orderShippingCost();
 	}
 
 	public void setOrderRegion(OrderRegion region) {

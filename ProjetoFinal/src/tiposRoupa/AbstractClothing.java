@@ -23,7 +23,6 @@ public abstract class AbstractClothing implements IClothing {
 		this.type = type;
 		this.color = color;
 		this.size = size;
-		this.unitPrice = unitPrice;
 	}
 
 	public String getCode() {
@@ -51,15 +50,15 @@ public abstract class AbstractClothing implements IClothing {
 	}
 	
 	public double unitPrice() {
-		return unitPrice;
+		return price.unitPrice();
 	}
 	
 	public void setNrItemsOrdered(int nrItems) {
-		this.nrItems = nrItems;
+		price.setNrItemsOrdered(nrItems);
 	}
 
 	public int nrItemsOrdered() {
-		return nrItems;
+		return price.nrItemsOrdered();
 	}
 	
 	public double unitShippingCost() {

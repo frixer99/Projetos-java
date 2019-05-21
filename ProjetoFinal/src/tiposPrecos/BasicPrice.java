@@ -16,7 +16,7 @@ public class BasicPrice extends AbstractPrice {
 	}
 
 	public double orderShippingCost() {
-		return shipping * nrItems;
+		return unitShippingCost() * nrItemsOrdered();
 	}
 
 	public double discount() {
@@ -24,17 +24,16 @@ public class BasicPrice extends AbstractPrice {
 	}
 
 	public double orderPrice() {
-		return (nrItems * unitPrice) + orderShippingCost();
+		return (nrItemsOrdered() * unitPrice()) + orderShippingCost();
 	}
 
 	public void setOrderRegion(OrderRegion region) {
 		// DUMMY
-
 	}
 
 	public OrderRegion orderRegion() {
 		// DUMMY
 		return null;
 	}
-
+	
 }
