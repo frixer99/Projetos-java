@@ -9,6 +9,11 @@ public class ClothingCollection implements IClothingCollection {
 
 	public static final int DEFAULT_SIZE = 50;
 	public static final int GROWTH = 2;
+	public static final int TIER1 = 10000;
+	public static final int TIER2 = 50000;
+	public static final int TIER3 = 100000;
+	public static final int TIER4 = 500000;	
+	
 	protected int counter;
 	protected IClothing[] clothes;
 	
@@ -80,23 +85,41 @@ public class ClothingCollection implements IClothingCollection {
 	 */
 	
 	public int totalNumberOfItems() {
-		// TODO Auto-generated method stub
-		return 0;
+		Iterator<IClothing> clothingIterator = iterator();
+		int totalItems = 0;
+		
+		while(clothingIterator.hasNext()) {
+			totalItems += clothingIterator.next().nrItemsOrdered();
+		}
+		return totalItems;
 	}
 
 	public double sumPrice() {
-		// TODO Auto-generated method stub
-		return 0;
+		Iterator<IClothing> clothingIterator = iterator();
+		double totalPrice = 0;
+		
+		while(clothingIterator.hasNext()) {
+			totalPrice += clothingIterator.next().orderPrice();
+		}
+		return totalPrice;
 	}
 
 	public double totalPrice() {
-		// TODO Auto-generated method stub
-		return 0;
+		return sumPrice() * (1 - discount());
 	}
 
 	public double discount() {
-		// TODO Auto-generated method stub
-		return 0;
+		if(totalNumberOfItems() <= TIER1) {
+			return 0.00;
+		}else if(totalNumberOfItems() <= TIER2) {
+			return 1;
+		}else if(totalNumberOfItems() <= TIER3) {
+			return 2;
+		}else if(totalNumberOfItems() <= TIER4) {
+			return 3;
+		}else {
+			return 3.5;
+		}
 	}
 	
 }

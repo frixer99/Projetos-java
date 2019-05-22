@@ -30,6 +30,7 @@ public class Main {
 		int[] dataSimple = load(BASIC_FILE);
 		int[] dataRanged = load(RANGED_FILE);
 		int[] dataRegional = load(REGIONAL_FILE);
+		boolean finish = false;
 		
 		boolean fileresults = printFileResults(dataSimple, dataRanged, dataRegional);
 		if(fileresults) {
@@ -37,7 +38,7 @@ public class Main {
 			Scanner scan = new Scanner(System.in);
 			System.out.print("Comando: ");
 			String command = scan.nextLine().toUpperCase();
-			while (!command.equals(Constants.SAIR) && !command.equals(Constants.S)) {
+			while (!command.equals(Constants.SAIR) && !command.equals(Constants.S) && !finish) {
 				switch (command) {
 				case (Constants.HELP):
 				case (Constants.H):
@@ -52,8 +53,11 @@ public class Main {
 				case (Constants.ALE):
 					ale();
 					break;
+				case (Constants.EAE):
+					eae();
+					break;
 				case (Constants.CE):
-
+					finish = ce();
 					break;
 				case (Constants.LLMB):
 
@@ -61,8 +65,11 @@ public class Main {
 				default:
 					System.out.println("Comando não existe.");
 				}
-				System.out.print("Comando: ");
-				command = scan.nextLine().toUpperCase();
+				
+				if(!finish) {
+					System.out.print("Comando: ");
+					command = scan.nextLine().toUpperCase();
+				}
 			}
 			scan.close();
 
@@ -204,7 +211,7 @@ public class Main {
 		//TODO	
 	}
 	
-	private static void ale() {//Scanner scan
+	private static void ale() {
 		Scanner scan = new Scanner(System.in);
 		IClothing elem = null;
 		boolean admissible = false;
@@ -225,8 +232,8 @@ public class Main {
 			
 		}else if(regionalClothing.hasProduct(code)) {
 			System.out.println("Lote é do tipo regional");
-			System.out.print("Zona de envio (EU, NEU, WW):	");
-			region = scan.nextLine();
+			System.out.print("Zona de envio (EU, NEU, WW): ");
+			region = scan.next();
 
 			elem = addRegionalOrder(region, elem, code, nrItems);
 			admissible = true;
@@ -254,7 +261,6 @@ public class Main {
 		elem = simpleClothing.getProduct(code);
 		elem.setNrItemsOrdered(nrItems);
 		return elem;
-
 	}
 	
 	private static IClothing addRangedOrder(IClothing elem, String code, int nrItems) {
@@ -275,5 +281,22 @@ public class Main {
 		}
 		return elem;
 	}
+		
+	private static void eae() {
+		System.out.println("Encomenda atual com " + order.size() + " lotes, num total de " + order.totalNumberOfItems() +
+						   " peças e totalizando o montante de " + order.totalPrice());
+	}
+	
+	private static boolean ce() {
+		if(order.isEmpty()) {
+			System.out.println("Encomenda vazia. Não é possível concretizar.");
+			return false;
+		}else {
+			eae();
+			System.out.println("Concretizada com sucesso.");
+			return true;
+		}
+	}
+
 	
 }
