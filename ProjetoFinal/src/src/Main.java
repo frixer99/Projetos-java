@@ -225,6 +225,7 @@ public class Main {
 	}
 	
 	private static void ale() {
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		IClothing elem = null;
 		boolean admissible = false;
@@ -312,6 +313,7 @@ public class Main {
 	}
 
 	private static void llmb() {
+		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Quantidade a usar na pesquisa: ");
 		int quantidade = scan.nextInt();
@@ -326,16 +328,31 @@ public class Main {
 			 * 		lowerPrice( ? ,lower);
 			 * }
 			 */
-			lower = lowerPriceBasic(lower, quantidade);
-			lower = lowerPriceRanged(lower, quantidade);
-			//lower = lowerPriceRegional(lower, quantidade);
+			double lower1 = lowerPriceBasic(quantidade);
+			double lower2 = lowerPriceRanged(quantidade);
+			double lower3 = lowerPriceRegional(quantidade);
+			System.out.println(lower1);
+			System.out.println(lower2);
+			System.out.println(lower3);
+			String region = "";
+			if(lower1 < lower2 && lower1 < lower3) {
+				lower = lower1;
+				region = "Básico";
+			}else if (lower2 < lower1 && lower2 < lower3) {
+				lower = lower2;
+				region = "Por escalões";
+			}else if(lower3 < lower1 && lower3 < lower2){
+				lower = lower3;
+				region = "Regional";
+			}
 			
-			System.out.println("Para a quantidade especificada, o lote mais barato é: " + "TESTE");
+			System.out.println("Para a quantidade especificada, o lote mais barato é: " + region);
 			System.out.println("Quantidade:" + quantidade + " corresponde a um custo total de " + lower);
 			
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private static double lowerPrice(IClothingCollection coll, double lower) {
 		Iterator<IClothing> itr = coll.iterator();
 		
@@ -347,7 +364,8 @@ public class Main {
 		return lower;
 	}
 	
-	private static double lowerPriceBasic(double lower, int quantidade) {
+	private static double lowerPriceBasic(int quantidade) {
+		double lower = Double.POSITIVE_INFINITY;
 		Iterator<IClothing> itr = simpleClothing.iterator();
 		while(itr.hasNext()) {
 			IClothing piece = itr.next();
@@ -359,7 +377,8 @@ public class Main {
 		return lower;
 	}
 	
-	private static double lowerPriceRanged(double lower, int quantidade) {
+	private static double lowerPriceRanged(int quantidade) {
+		double lower = Double.POSITIVE_INFINITY;
 		Iterator<IClothing> itr = rangedClothing.iterator();
 		while(itr.hasNext()) {
 			IClothing piece = itr.next();
@@ -371,12 +390,28 @@ public class Main {
 		return lower;
 	}
 	
-	private static double lowerPriceRegional(double lower, int quantidade) {
-		//TODO
-		return 0;
+	private static double lowerPriceRegional(int quantidade) {
+		double lower = Double.POSITIVE_INFINITY;
+		Iterator<IClothing> itr = regionalClothing.iterator();
+		double price;
+		while(itr.hasNext()) {
+			IClothing piece = itr.next();
+			piece.setNrItemsOrdered(quantidade);
+			
+			piece.setOrderRegion(OrderRegion.EU);
+			price = piece.orderPrice();
+			if(price < lower)
+				lower = price;
+			piece.setOrderRegion(OrderRegion.NEAR_EU);
+			price = piece.orderPrice();
+			if(price < lower)
+				lower = price;
+			piece.setOrderRegion(OrderRegion.WORLDWIDE);
+			price = piece.orderPrice();
+			if(price < lower)
+				lower = price;
+		}
+		return lower;
 	}
 
-	
-	
-	
 }
