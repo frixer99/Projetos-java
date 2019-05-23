@@ -2,6 +2,7 @@ package src;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import common.IClothing;
@@ -43,6 +44,7 @@ public class Main {
 				case (Constants.HELP):
 				case (Constants.H):
 					help();
+					System.out.println(ClothingCollection.numberOfCollections);
 					break;
 				case (Constants.LTP):
 					ltp();
@@ -60,7 +62,7 @@ public class Main {
 					finish = ce();
 					break;
 				case (Constants.LLMB):
-
+					llmb();
 					break;
 				default:
 					System.out.println("Comando não existe.");
@@ -208,7 +210,18 @@ public class Main {
 	}
 
 	private static void ltp() {
-		//TODO	
+		listCollection(simpleClothing);
+		listCollection(rangedClothing);
+		listCollection(regionalClothing);
+	}
+	
+	private static void listCollection(IClothingCollection coll) {
+		Iterator<IClothing> itr = coll.iterator();
+		
+		while(itr.hasNext()) {
+			System.out.println(itr.next());
+		}
+		
 	}
 	
 	private static void ale() {
@@ -298,5 +311,72 @@ public class Main {
 		}
 	}
 
+	private static void llmb() {
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Quantidade a usar na pesquisa: ");
+		int quantidade = scan.nextInt();
+		scan.nextLine();
+		if(quantidade <= 0) {
+			System.out.println("Este comando não funciona para quantidades zero ou  negativas");
+		}else {
+			double lower = Double.POSITIVE_INFINITY;
+			/**
+			 * int modosDeEncomenda = ClothingCollection.numberOfCollections - 1; //numero de coleçoes menos 1 da encomenda
+			 * for(int i = 0; i < modosDeEncomenda ; i++) { //MODOS DE ENCOMENDA
+			 * 		lowerPrice( ? ,lower);
+			 * }
+			 */
+			lower = lowerPriceBasic(lower, quantidade);
+			lower = lowerPriceRanged(lower, quantidade);
+			//lower = lowerPriceRegional(lower, quantidade);
+			
+			System.out.println("Para a quantidade especificada, o lote mais barato é: " + "TESTE");
+			System.out.println("Quantidade:" + quantidade + " corresponde a um custo total de " + lower);
+			
+		}
+	}
+	
+	private static double lowerPrice(IClothingCollection coll, double lower) {
+		Iterator<IClothing> itr = coll.iterator();
+		
+		while(itr.hasNext()) {
+			double price = itr.next().orderPrice();
+			if(price < lower)
+				lower = price;
+		}
+		return lower;
+	}
+	
+	private static double lowerPriceBasic(double lower, int quantidade) {
+		Iterator<IClothing> itr = simpleClothing.iterator();
+		while(itr.hasNext()) {
+			IClothing piece = itr.next();
+			piece.setNrItemsOrdered(quantidade);
+			double price = piece.orderPrice();
+			if(price < lower)
+				lower = price;
+		}
+		return lower;
+	}
+	
+	private static double lowerPriceRanged(double lower, int quantidade) {
+		Iterator<IClothing> itr = rangedClothing.iterator();
+		while(itr.hasNext()) {
+			IClothing piece = itr.next();
+			piece.setNrItemsOrdered(quantidade);
+			double price = piece.orderPrice();
+			if(price < lower)
+				lower = price;
+		}
+		return lower;
+	}
+	
+	private static double lowerPriceRegional(double lower, int quantidade) {
+		//TODO
+		return 0;
+	}
+
+	
+	
 	
 }

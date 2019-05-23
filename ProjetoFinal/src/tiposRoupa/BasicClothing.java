@@ -3,9 +3,7 @@ package tiposRoupa;
 import tiposPrecos.BasicPrice;
 
 public class BasicClothing extends AbstractClothing {
-	
-	protected double shipping;
-	
+		
 	public BasicClothing(String code, String description, double weight,String type, 
 						 String color, String size, double unitPrice, double shipping) {
 		
@@ -14,9 +12,15 @@ public class BasicClothing extends AbstractClothing {
 	}
 	
 	public String toString() {
-		String[] firstDescription = getDescription().split("\\(");
-		return getCode() + "|" + firstDescription[0] + "|" + getType() + "|" + getColor() + "|" + 
-			   getSize() + "|" + unitPrice() + "|" + unitShippingCost();
+		String desc;
+		if(getDescription().length() > 30) {
+			desc = getDescription().substring(0, 30);
+		}else {
+			desc = getDescription();
+		}
+
+		return getCode() + "|" + desc + "|" + getType() + "|" + getColor() + "|" + 
+			   getSize() + "|" + getWeight() + "|" + unitPrice();
 	}
 	
 }

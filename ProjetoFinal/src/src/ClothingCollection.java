@@ -16,10 +16,12 @@ public class ClothingCollection implements IClothingCollection {
 	
 	protected int counter;
 	protected IClothing[] clothes;
+	public static int numberOfCollections = 0;
 	
 	public ClothingCollection() {
 		counter = 0;
 		clothes = new IClothing[DEFAULT_SIZE];
+		numberOfCollections++;
 	}
 	
 	public void add(IClothing elem) {			

@@ -3,9 +3,7 @@ package tiposRoupa;
 import tiposPrecos.RangedPrice;
 
 public class RangedClothing extends AbstractClothing {
-	
-	protected double shipping;
-	
+		
 	public RangedClothing(String code, String description, double weight, String type, 
 						  String color, String size, double unitPrice, double shipping) {
 		
@@ -14,9 +12,14 @@ public class RangedClothing extends AbstractClothing {
 	}
 	
 	public String toString() {
-		String[] firstDescription = description.split("(");
-		return getCode() + "|" + firstDescription[0] + "|" + getType() + "|" + getColor() + "|" + 
-		   	   getSize() + "|" + unitPrice() + "|" + unitShippingCost();
+		String desc;
+		if(getDescription().length() > 30) {
+			desc = getDescription().substring(0, 30);
+		}else {
+			desc = getDescription();
+		}
+		return getCode() + "|" + desc + "|" + getType() + "|" + getColor() + "|" + 
+			   getSize() + "|" + getWeight() + "|" + unitPrice();
 	}
 	
 }

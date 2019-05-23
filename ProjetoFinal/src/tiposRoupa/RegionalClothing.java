@@ -3,13 +3,6 @@ package tiposRoupa;
 import tiposPrecos.RegionalPrice;
 
 public class RegionalClothing extends AbstractClothing {
-
-	private double EU1;
-	private double EUadd;
-	private double NEU1;
-	private double NEUadd;
-	private double WW1;
-	private double WWadd;
 	
 	public RegionalClothing(String code, String description, double weight, String type, String color, String size,
 							double unitPrice, double EU1, double EUadd, double NEU1, double NEUadd, double WW1 ,double WWadd) {
@@ -18,8 +11,16 @@ public class RegionalClothing extends AbstractClothing {
 	}
 
 	public String toString() {
-		return "[" + getCode() + "/" + getDescription() + "/" + getSize() + " > <" + unitPrice() + 
-				">[" + EU1 + ", " + EUadd + "][" + NEU1 + ", " + NEUadd + "][" +
-				WW1 + ", " + WWadd + "] > " + "WHAT" + "]";
+		String desc;
+		if(getDescription().length() > 30) {
+			desc = getDescription().substring(0, 30);
+		}else {
+			desc = getDescription();
+		}
+		//TODO MUDAR O CAST
+		return "[" + getCode() + "/" + desc + "/" + getSize() + " > <" + unitPrice() + 
+				">[" + ((RegionalPrice) price).getEU1() + ", " + ((RegionalPrice) price).getEUadd() + "][" + ((RegionalPrice) price).getNEU1() +
+				", " + ((RegionalPrice) price).getNEUadd() + "][" + ((RegionalPrice) price).getWW1() + ", " + ((RegionalPrice) price).getWWadd() + 
+				"]]";
 	}
 }

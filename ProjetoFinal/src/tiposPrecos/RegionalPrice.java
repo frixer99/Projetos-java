@@ -23,6 +23,30 @@ public class RegionalPrice extends AbstractPrice {
 
 	}
 
+	public double getEU1() {
+		return EU1;
+	}
+
+	public double getEUadd() {
+		return EUadd;
+	}
+
+	public double getNEU1() {
+		return NEU1;
+	}
+
+	public double getNEUadd() {
+		return NEUadd;
+	}
+
+	public double getWW1() {
+		return WW1;
+	}
+
+	public double getWWadd() {
+		return WWadd;
+	}
+
 	public double unitShippingCost() {
 		switch(orderRegion()) {
 		case EU: return EU1;
