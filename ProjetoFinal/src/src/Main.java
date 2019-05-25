@@ -13,16 +13,16 @@ import tiposRoupa.RangedClothing;
 import tiposRoupa.RegionalClothing;
 
 public class Main {
-	
+
 	public static final String BASIC_FILE = "basic.csv";
 	public static final String RANGED_FILE = "ranged.csv";
 	public static final String REGIONAL_FILE = "regional.csv";
-	
+
 	public static IClothingCollection simpleClothing;
 	public static IClothingCollection rangedClothing;
 	public static IClothingCollection regionalClothing;
 	public static IClothingCollection order;
-	
+
 	public static void main(String[] args) {
 		simpleClothing = new ClothingCollection();
 		rangedClothing = new ClothingCollection();
@@ -32,9 +32,9 @@ public class Main {
 		int[] dataRanged = load(RANGED_FILE);
 		int[] dataRegional = load(REGIONAL_FILE);
 		boolean finish = false;
-		
+
 		boolean fileresults = printFileResults(dataSimple, dataRanged, dataRegional);
-		if(fileresults) {
+		if (fileresults) {
 			printDataResults(dataSimple, dataRanged, dataRegional);
 			Scanner scan = new Scanner(System.in);
 			System.out.print("Comando: ");
@@ -44,7 +44,6 @@ public class Main {
 				case (Constants.HELP):
 				case (Constants.H):
 					help();
-					System.out.println(ClothingCollection.numberOfCollections);
 					break;
 				case (Constants.LTP):
 					ltp();
@@ -67,8 +66,8 @@ public class Main {
 				default:
 					System.out.println("Comando não existe.");
 				}
-				
-				if(!finish) {
+
+				if (!finish) {
 					System.out.print("Comando: ");
 					command = scan.nextLine().toUpperCase();
 				}
@@ -76,20 +75,20 @@ public class Main {
 			scan.close();
 
 		}
-		
+
 	}
 
 	private static int[] load(String file) {
 		int countAdd = 0;
 		int countError = 0;
-		int[] data = {-1, -1};
+		int[] data = { -1, -1 };
 		IClothing piece;
-		
+
 		try {
 			Scanner scan = new Scanner(new FileReader(file));
 			String line = scan.nextLine();
 			line = scan.nextLine();
-			while(scan.hasNextLine()) {
+			while (scan.hasNextLine()) {
 				try {
 					line = scan.nextLine();
 					switch (file) {
@@ -109,17 +108,17 @@ public class Main {
 						piece = null;
 					}
 					countAdd++;
-					
-				}catch(Exception e) { // NumberFormatException?
+
+				} catch (Exception e) { // NumberFormatException?
 					countError++;
 				}
 			}
 			scan.close();
 			data[0] = countAdd;
 			data[1] = countError;
-			
-		} catch(FileNotFoundException e) {
-			System.out.println("Ficheiro " + file + "não encontrado.");
+
+		} catch (FileNotFoundException e) {
+
 		}
 		return data;
 	}
@@ -132,28 +131,28 @@ public class Main {
 		String color = items[4];
 		String size = items[5];
 		String unitPrice = items[6];
-		String[] data = {code, description, weight, type, color, size, unitPrice};
+		String[] data = { code, description, weight, type, color, size, unitPrice };
 		return data;
 	}
-	
+
 	private static BasicClothing simpleProcess(String line) {
 		String[] items = line.split(";");
 		String[] generalData = generalProcess(items);
 		double sendPrice = Double.parseDouble(items[7]);
 
 		return new BasicClothing(generalData[0], generalData[1], Double.parseDouble(generalData[2]), generalData[3],
-							   	 generalData[4], generalData[5], Double.parseDouble(generalData[6]), sendPrice);
+				generalData[4], generalData[5], Double.parseDouble(generalData[6]), sendPrice);
 	}
-	
+
 	private static RangedClothing rangedProcess(String line) {
 		String[] items = line.split(";");
 		String[] generalData = generalProcess(items);
 		double sendPrice = Double.parseDouble(items[7]);
 
 		return new RangedClothing(generalData[0], generalData[1], Double.parseDouble(generalData[2]), generalData[3],
-								  generalData[4], generalData[5], Double.parseDouble(generalData[6]), sendPrice);
+				generalData[4], generalData[5], Double.parseDouble(generalData[6]), sendPrice);
 	}
-	
+
 	private static RegionalClothing regionalProcess(String line) {
 		String[] items = line.split(";");
 		String[] generalData = generalProcess(items);
@@ -163,12 +162,12 @@ public class Main {
 		double afterNEU = Double.parseDouble(items[10]);
 		double firstWW = Double.parseDouble(items[11]);
 		double afterWW = Double.parseDouble(items[12]);
-		
+
 		return new RegionalClothing(generalData[0], generalData[1], Double.parseDouble(generalData[2]), generalData[3],
-							   		generalData[4], generalData[5], Double.parseDouble(generalData[6]), firstEU,
-							   		afterEU, firstNEU, afterNEU, firstWW, afterWW);
+				generalData[4], generalData[5], Double.parseDouble(generalData[6]), firstEU, afterEU, firstNEU,
+				afterNEU, firstWW, afterWW);
 	}
-	
+
 	private static boolean printFileResults(int[] dataSimple, int[] dataRanged, int[] dataRegional) {
 		boolean result = true;
 		if (dataSimple[0] == -1) {
@@ -214,98 +213,107 @@ public class Main {
 		listCollection(rangedClothing);
 		listCollection(regionalClothing);
 	}
-	
+
 	private static void listCollection(IClothingCollection coll) {
 		Iterator<IClothing> itr = coll.iterator();
-		
-		while(itr.hasNext()) {
+
+		while (itr.hasNext()) {
 			System.out.println(itr.next());
 		}
-		
+
 	}
-	
+
 	private static void ale() {
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		IClothing elem = null;
 		boolean admissible = false;
 		String region = "EU";
-		
+
 		System.out.print("Código do produto: ");
 		String code = scan.nextLine();
 		System.out.print("Quantidade de peças " + code + ": ");
-		int nrItems = scan.nextInt();
-		
-		if(simpleClothing.hasProduct(code)) {
-			elem = addBasicOrder(elem, code, nrItems);
-			admissible = true;
-			
-		}else if(rangedClothing.hasProduct(code)) {
-			elem = addRangedOrder(elem, code, nrItems);
-			admissible = true;
-			
-		}else if(regionalClothing.hasProduct(code)) {
-			System.out.println("Lote é do tipo regional");
-			System.out.print("Zona de envio (EU, NEU, WW): ");
-			region = scan.next();
+		int nrItems = 0;
+		try {
+			nrItems = scan.nextInt();
 
-			elem = addRegionalOrder(region, elem, code, nrItems);
-			admissible = true;
-			
-		}else {
-			System.out.println("Produto " + code + " não encontrado.");
+			if (simpleClothing.hasProduct(code)) {
+				elem = addBasicOrder(elem, code, nrItems);
+				admissible = true;
+
+			} else if (rangedClothing.hasProduct(code)) {
+				elem = addRangedOrder(elem, code, nrItems);
+				admissible = true;
+
+			} else if (regionalClothing.hasProduct(code)) {
+				System.out.println("Lote é do tipo regional");
+				System.out.print("Zona de envio (EU, NEU, WW): ");
+				region = scan.next();
+
+				elem = addRegionalOrder(region, elem, code, nrItems);
+				admissible = true;
+
+			} else {
+				System.out.println("Produto " + code + " não encontrado.");
+			}
+
+		} catch (Exception e) {
+			System.out.println(Constants.QUANT_ERROR);
 		}
 
-		if(admissible) {
-			System.out.println(nrItems + " unidades do produto " + code + " para a região " + region + 
-							   " totalizando o montante de " + elem.orderPrice() + "\nRegistar lote (S/N)? ");
+		if (admissible) {
+			System.out.println(nrItems + " unidades do produto " + code + " para a região " + region
+					+ " totalizando o montante de " + elem.orderPrice() + "\nRegistar lote (S/N)? ");
 			String answer = scan.next().toUpperCase();
-			if(answer.equals("S")) {
+			if (answer.equals("S")) {
 				order.add(elem);
 				System.out.println("Encomenda de lote " + nrItems + " unidades do produto " + code + " para a região "
-									+ region + " registada com sucesso.");
-			}else {
+						+ region + " registada com sucesso.");
+			} else {
 				System.out.println("Operação cancelada.");
 			}
 		}
 	}
-	
+
 	private static IClothing addBasicOrder(IClothing elem, String code, int nrItems) {
 		System.out.println("Lote é do tipo simples");
 		elem = simpleClothing.getProduct(code);
 		elem.setNrItemsOrdered(nrItems);
 		return elem;
 	}
-	
+
 	private static IClothing addRangedOrder(IClothing elem, String code, int nrItems) {
 		System.out.println("Lote é do tipo por escalão");
 		elem = rangedClothing.getProduct(code);
 		elem.setNrItemsOrdered(nrItems);
 		return elem;
 	}
-	
+
 	private static IClothing addRegionalOrder(String region, IClothing elem, String code, int nrItems) {
 		elem = regionalClothing.getProduct(code);
 		elem.setNrItemsOrdered(nrItems);
-		
-		switch(region.toUpperCase()) {
-		case(Constants.EU):elem.setOrderRegion(OrderRegion.toOrderRegion("EU"));
-		case(Constants.NEU):elem.setOrderRegion(OrderRegion.toOrderRegion("NEAR-EU"));
-		case(Constants.WW):elem.setOrderRegion(OrderRegion.toOrderRegion("WORLDWIDE"));
+
+		switch (region.toUpperCase()) {
+		case (Constants.EU):
+			elem.setOrderRegion(OrderRegion.toOrderRegion("EU"));
+		case (Constants.NEU):
+			elem.setOrderRegion(OrderRegion.toOrderRegion("NEAR-EU"));
+		case (Constants.WW):
+			elem.setOrderRegion(OrderRegion.toOrderRegion("WORLDWIDE"));
 		}
 		return elem;
 	}
-		
+
 	private static void eae() {
-		System.out.println("Encomenda atual com " + order.size() + " lotes, num total de " + order.totalNumberOfItems() +
-						   " peças e totalizando o montante de " + order.totalPrice());
+		System.out.println("Encomenda atual com " + order.size() + " lotes, num total de " + order.totalNumberOfItems()
+				+ " peças e totalizando o montante de " + order.totalPrice());
 	}
-	
+
 	private static boolean ce() {
-		if(order.isEmpty()) {
+		if (order.isEmpty()) {
 			System.out.println("Encomenda vazia. Não é possível concretizar.");
 			return false;
-		}else {
+		} else {
 			eae();
 			System.out.println("Concretizada com sucesso.");
 			return true;
@@ -316,99 +324,96 @@ public class Main {
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		System.out.print("Quantidade a usar na pesquisa: ");
-		int quantidade = scan.nextInt();
-		scan.nextLine();
-		if(quantidade <= 0) {
-			System.out.println("Este comando não funciona para quantidades zero ou  negativas");
-		}else {
-			double lower = Double.POSITIVE_INFINITY;
-			/**
-			 * int modosDeEncomenda = ClothingCollection.numberOfCollections - 1; //numero de coleçoes menos 1 da encomenda
-			 * for(int i = 0; i < modosDeEncomenda ; i++) { //MODOS DE ENCOMENDA
-			 * 		lowerPrice( ? ,lower);
-			 * }
-			 */
-			double lower1 = lowerPriceBasic(quantidade);
-			double lower2 = lowerPriceRanged(quantidade);
-			double lower3 = lowerPriceRegional(quantidade);
-			System.out.println(lower1);
-			System.out.println(lower2);
-			System.out.println(lower3);
-			String region = "";
-			if(lower1 < lower2 && lower1 < lower3) {
-				lower = lower1;
-				region = "Básico";
-			}else if (lower2 < lower1 && lower2 < lower3) {
-				lower = lower2;
-				region = "Por escalões";
-			}else if(lower3 < lower1 && lower3 < lower2){
-				lower = lower3;
-				region = "Regional";
+		try {
+			int quantidade = scan.nextInt();
+			scan.nextLine();
+			if (quantidade <= 0) {
+				System.out.println("Este comando não funciona para quantidades zero ou  negativas");
+			} else {
+				double lower = Double.POSITIVE_INFINITY;
+				double lower1 = lowerPriceBasic(quantidade);
+				double lower2 = lowerPriceRanged(quantidade);
+				double lower3 = lowerPriceRegional(quantidade);
+				String region = "";
+
+				if (lower1 < lower2 && lower1 < lower3) {
+					lower = lower1;
+					region = "Básico";
+				} else if (lower2 < lower1 && lower2 < lower3) {
+					lower = lower2;
+					region = "Por escalões";
+				} else if (lower3 < lower1 && lower3 < lower2) {
+					lower = lower3;
+					region = "Regional";
+				}
+
+				System.out.println("Para a quantidade especificada, o lote mais barato é: " + region);
+				System.out.println("Quantidade:" + quantidade + " corresponde a um custo total de " + lower);
+
 			}
-			
-			System.out.println("Para a quantidade especificada, o lote mais barato é: " + region);
-			System.out.println("Quantidade:" + quantidade + " corresponde a um custo total de " + lower);
-			
+
+		} catch (Exception e) {
+			System.out.println(Constants.QUANT_ERROR);
 		}
 	}
-	
+
 	@SuppressWarnings("unused")
 	private static double lowerPrice(IClothingCollection coll, double lower) {
 		Iterator<IClothing> itr = coll.iterator();
-		
-		while(itr.hasNext()) {
+
+		while (itr.hasNext()) {
 			double price = itr.next().orderPrice();
-			if(price < lower)
+			if (price < lower)
 				lower = price;
 		}
 		return lower;
 	}
-	
+
 	private static double lowerPriceBasic(int quantidade) {
 		double lower = Double.POSITIVE_INFINITY;
 		Iterator<IClothing> itr = simpleClothing.iterator();
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			IClothing piece = itr.next();
 			piece.setNrItemsOrdered(quantidade);
 			double price = piece.orderPrice();
-			if(price < lower)
+			if (price < lower)
 				lower = price;
 		}
 		return lower;
 	}
-	
+
 	private static double lowerPriceRanged(int quantidade) {
 		double lower = Double.POSITIVE_INFINITY;
 		Iterator<IClothing> itr = rangedClothing.iterator();
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			IClothing piece = itr.next();
 			piece.setNrItemsOrdered(quantidade);
 			double price = piece.orderPrice();
-			if(price < lower)
+			if (price < lower)
 				lower = price;
 		}
 		return lower;
 	}
-	
+
 	private static double lowerPriceRegional(int quantidade) {
 		double lower = Double.POSITIVE_INFINITY;
 		Iterator<IClothing> itr = regionalClothing.iterator();
 		double price;
-		while(itr.hasNext()) {
+		while (itr.hasNext()) {
 			IClothing piece = itr.next();
 			piece.setNrItemsOrdered(quantidade);
-			
+
 			piece.setOrderRegion(OrderRegion.EU);
 			price = piece.orderPrice();
-			if(price < lower)
+			if (price < lower)
 				lower = price;
 			piece.setOrderRegion(OrderRegion.NEAR_EU);
 			price = piece.orderPrice();
-			if(price < lower)
+			if (price < lower)
 				lower = price;
 			piece.setOrderRegion(OrderRegion.WORLDWIDE);
 			price = piece.orderPrice();
-			if(price < lower)
+			if (price < lower)
 				lower = price;
 		}
 		return lower;
