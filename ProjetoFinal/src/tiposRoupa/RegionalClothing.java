@@ -1,5 +1,6 @@
 package tiposRoupa;
 
+import common.ClothingKind;
 import tiposPrecos.RegionalPrice;
 
 public class RegionalClothing extends AbstractClothing {
@@ -23,4 +24,9 @@ public class RegionalClothing extends AbstractClothing {
 				", " + ((RegionalPrice) price).getNEUadd() + "][" + ((RegionalPrice) price).getWW1() + ", " + ((RegionalPrice) price).getWWadd() + 
 				"]]";
 	}
+	
+	public ClothingKind pricingKind() {
+		return ClothingKind.REGIONAL;	
+	}
+
 }

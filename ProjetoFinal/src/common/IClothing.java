@@ -15,4 +15,9 @@ public interface IClothing extends IPriceBuilder {
 	String getColor();
 
 	double getWeight();
+
+	/**
+	 * @return a ClothingKind value stating the the price mode used
+	 */
+	public ClothingKind pricingKind();
 }

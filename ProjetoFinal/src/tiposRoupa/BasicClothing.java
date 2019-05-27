@@ -1,5 +1,6 @@
 package tiposRoupa;
 
+import common.ClothingKind;
 import tiposPrecos.BasicPrice;
 
 public class BasicClothing extends AbstractClothing {
@@ -23,4 +24,7 @@ public class BasicClothing extends AbstractClothing {
 			   getSize() + "|" + getWeight() + "|" + unitPrice();
 	}
 	
+	public ClothingKind pricingKind() {
+		return ClothingKind.BASIC;	
+	}
 }

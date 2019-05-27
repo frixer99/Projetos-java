@@ -227,7 +227,7 @@ public class Main {
 		@SuppressWarnings("resource")
 		Scanner scan = new Scanner(System.in);
 		IClothing elem = null;
-		boolean admissible = false;
+		String admissible = "";
 		String region = "EU";
 
 		System.out.print("Código do produto: ");
@@ -239,11 +239,11 @@ public class Main {
 
 			if (simpleClothing.hasProduct(code)) {
 				elem = addBasicOrder(elem, code, nrItems);
-				admissible = true;
+				admissible = "basic";
 
 			} else if (rangedClothing.hasProduct(code)) {
 				elem = addRangedOrder(elem, code, nrItems);
-				admissible = true;
+				admissible = "ranged";
 
 			} else if (regionalClothing.hasProduct(code)) {
 				System.out.println("Lote é do tipo regional");
@@ -251,7 +251,7 @@ public class Main {
 				region = scan.next();
 
 				elem = addRegionalOrder(region, elem, code, nrItems);
-				admissible = true;
+				admissible = "regional";
 
 			} else {
 				System.out.println("Produto " + code + " não encontrado.");
@@ -261,17 +261,28 @@ public class Main {
 			System.out.println(Constants.QUANT_ERROR);
 		}
 
-		if (admissible) {
-			System.out.println(nrItems + " unidades do produto " + code + " para a região " + region
+		if (admissible.equals("regional")) {
+			System.out.println(elem.nrItemsOrdered() + " unidades do produto " + elem.getCode() + " para a região " + elem.orderRegion()
 					+ " totalizando o montante de " + elem.orderPrice() + "\nRegistar lote (S/N)? ");
 			String answer = scan.next().toUpperCase();
 			if (answer.equals("S")) {
 				order.add(elem);
-				System.out.println("Encomenda de lote " + nrItems + " unidades do produto " + code + " para a região "
-						+ region + " registada com sucesso.");
+				System.out.println("Encomenda de lote " + elem.nrItemsOrdered() + " unidades do produto " + elem.getCode() + " para a região "
+						+ elem.orderRegion() + " registada com sucesso.");
 			} else {
 				System.out.println("Operação cancelada.");
 			}
+		} else if(admissible.equals("basic") || admissible.equals("ranged")) {
+			System.out.println(elem.nrItemsOrdered() + " unidades do produto " + elem.getCode() + " totalizando o montante de " 
+								+ elem.orderPrice() + "\nRegistar lote (S/N)? ");
+			String answer = scan.next().toUpperCase();
+			if (answer.equals("S")) {
+				order.add(elem);
+				System.out.println("Encomenda de lote " + elem.nrItemsOrdered() + " unidades do produto " + elem.getCode() + " registada com sucesso.");
+			} else {
+				System.out.println("Operação cancelada.");
+			}
+
 		}
 	}
 
@@ -296,10 +307,16 @@ public class Main {
 		switch (region.toUpperCase()) {
 		case (Constants.EU):
 			elem.setOrderRegion(OrderRegion.toOrderRegion("EU"));
+			break;
 		case (Constants.NEU):
 			elem.setOrderRegion(OrderRegion.toOrderRegion("NEAR-EU"));
+			break;
 		case (Constants.WW):
 			elem.setOrderRegion(OrderRegion.toOrderRegion("WORLDWIDE"));
+			break;
+		default:
+			elem.setOrderRegion(OrderRegion.toOrderRegion("EU"));
+			break;
 		}
 		return elem;
 	}

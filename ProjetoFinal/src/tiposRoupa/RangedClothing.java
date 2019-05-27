@@ -1,5 +1,6 @@
 package tiposRoupa;
 
+import common.ClothingKind;
 import tiposPrecos.RangedPrice;
 
 public class RangedClothing extends AbstractClothing {
@@ -21,5 +22,10 @@ public class RangedClothing extends AbstractClothing {
 		return getCode() + "|" + desc + "|" + getType() + "|" + getColor() + "|" + 
 			   getSize() + "|" + getWeight() + "|" + unitPrice();
 	}
+
+	public ClothingKind pricingKind() {
+		return ClothingKind.RANGED;	
+	}
 	
 }
+

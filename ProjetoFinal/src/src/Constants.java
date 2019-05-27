@@ -17,5 +17,5 @@ public final class Constants {
 	public static final String NEU = "NEU";
 	public static final String WW = "WW";
 	
-	public static final String QUANT_ERROR = "Quantidade não válida";
+	public static final String QUANT_ERROR = "Quantidade não válida.";
 }
