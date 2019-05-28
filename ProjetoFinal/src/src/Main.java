@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.Iterator;
 import java.util.Scanner;
 
+//import common.ClothingKind;
 import common.IClothing;
 import common.IClothingCollection;
 import common.OrderRegion;
@@ -14,32 +15,35 @@ import tiposRoupa.RegionalClothing;
 
 public class Main {
 
-	public static final String BASIC_FILE = "basic.csv";
-	public static final String RANGED_FILE = "ranged.csv";
-	public static final String REGIONAL_FILE = "regional.csv";
-
+	public static final String BASIC_FILE_PATH = "basic.csv"; //ClothingKind.BASIC.filePath();
+	public static final String RANGED_FILE_PATH = "ranged.csv"; //ClothingKind.RANGED.filePath();
+	public static final String REGIONAL_FILE_PATH = "regional.csv"; //ClothingKind.REGIONAL.filePath();
+	
 	public static IClothingCollection simpleClothing;
 	public static IClothingCollection rangedClothing;
 	public static IClothingCollection regionalClothing;
 	public static IClothingCollection order;
+	
+	public static int encomendasConcretizadas = 0;
+	public static double montanteTotal = 0;
 
+	
 	public static void main(String[] args) {
 		simpleClothing = new ClothingCollection();
 		rangedClothing = new ClothingCollection();
 		regionalClothing = new ClothingCollection();
 		order = new ClothingCollection();
-		int[] dataSimple = load(BASIC_FILE);
-		int[] dataRanged = load(RANGED_FILE);
-		int[] dataRegional = load(REGIONAL_FILE);
-		boolean finish = false;
-
+		int[] dataSimple = load(BASIC_FILE_PATH);
+		int[] dataRanged = load(RANGED_FILE_PATH);
+		int[] dataRegional = load(REGIONAL_FILE_PATH);
+		
 		boolean fileresults = printFileResults(dataSimple, dataRanged, dataRegional);
 		if (fileresults) {
 			printDataResults(dataSimple, dataRanged, dataRegional);
 			Scanner scan = new Scanner(System.in);
 			System.out.print("Comando: ");
 			String command = scan.nextLine().toUpperCase();
-			while (!command.equals(Constants.SAIR) && !command.equals(Constants.S) && !finish) {
+			while (!command.equals(Constants.SAIR) && !command.equals(Constants.S)) {
 				switch (command) {
 				case (Constants.HELP):
 				case (Constants.H):
@@ -58,7 +62,7 @@ public class Main {
 					eae();
 					break;
 				case (Constants.CE):
-					finish = ce();
+					ce();
 					break;
 				case (Constants.LLMB):
 					llmb();
@@ -66,12 +70,14 @@ public class Main {
 				default:
 					System.out.println("Comando não existe.");
 				}
-
-				if (!finish) {
-					System.out.print("Comando: ");
-					command = scan.nextLine().toUpperCase();
-				}
+				System.out.print("Comando: ");
+				command = scan.nextLine().toUpperCase();
 			}
+			
+			System.out.println(encomendasConcretizadas + " encomendas concretizadas.");
+			System.out.println("Montante total das encomendas: " + montanteTotal + ".");
+			System.out.println("Sessão terminada. Obrigado pela sua preferência.");
+			
 			scan.close();
 
 		}
@@ -92,15 +98,15 @@ public class Main {
 				try {
 					line = scan.nextLine();
 					switch (file) {
-					case BASIC_FILE:
+					case BASIC_FILE_PATH:
 						piece = simpleProcess(line);
 						simpleClothing.add(piece);
 						break;
-					case RANGED_FILE:
+					case RANGED_FILE_PATH:
 						piece = rangedProcess(line);
 						rangedClothing.add(piece);
 						break;
-					case REGIONAL_FILE:
+					case REGIONAL_FILE_PATH:
 						piece = regionalProcess(line);
 						regionalClothing.add(piece);
 						break;
@@ -171,15 +177,15 @@ public class Main {
 	private static boolean printFileResults(int[] dataSimple, int[] dataRanged, int[] dataRegional) {
 		boolean result = true;
 		if (dataSimple[0] == -1) {
-			System.out.println("Ficheiro " + BASIC_FILE + " não encontrado.");
+			System.out.println("Ficheiro " + BASIC_FILE_PATH + " não encontrado.");
 			result = false;
 		}
 		if (dataRanged[0] == -1) {
-			System.out.println("Ficheiro " + RANGED_FILE + " não encontrado.");
+			System.out.println("Ficheiro " + RANGED_FILE_PATH + " não encontrado.");
 			result = false;
 		}
 		if (dataRegional[0] == -1) {
-			System.out.println("Ficheiro " + REGIONAL_FILE + " não encontrado.");
+			System.out.println("Ficheiro " + REGIONAL_FILE_PATH + " não encontrado.");
 			result = false;
 		}
 		return result;
@@ -326,14 +332,16 @@ public class Main {
 				+ " peças e totalizando o montante de " + order.totalPrice());
 	}
 
-	private static boolean ce() {
+	private static void ce() {
 		if (order.isEmpty()) {
 			System.out.println("Encomenda vazia. Não é possível concretizar.");
-			return false;
 		} else {
 			eae();
 			System.out.println("Concretizada com sucesso.");
-			return true;
+			encomendasConcretizadas++;
+			montanteTotal += order.totalPrice();
+			
+			order = new ClothingCollection();
 		}
 	}
 
