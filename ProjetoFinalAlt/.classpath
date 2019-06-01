@@ -5,7 +5,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="poob1819_Veiga54511P1_Castelhano54576P1"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
