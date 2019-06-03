@@ -112,7 +112,7 @@ public class Main {
 
 					countAdd++;
 
-				} catch (Exception e) { // NumberFormatException?
+				} catch (Exception e) {
 					countError++;
 				}
 			}
@@ -200,13 +200,13 @@ public class Main {
 
 	private static void help() {
 		System.out.println("SAIR Termina execução e sai.");
-		System.out.println("S Termina execução e sai.");
+		System.out.println("S    Termina execução e sai.");
 		System.out.println("HELP Lista elenco de comandos.");
-		System.out.println("H Lista elenco de comandos.");
-		System.out.println("LTP Listar Todos os Produtos.");
+		System.out.println("H    Lista elenco de comandos.");
+		System.out.println("LTP  Listar Todos os Produtos.");
 		System.out.println("STAT Contagens globais dos dados.");
-		System.out.println("ALE Acrescentar Lote à Encomenda.");
-		System.out.println("CE Concretizar a Encomenda.");
+		System.out.println("ALE  Acrescentar Lote à Encomenda.");
+		System.out.println("CE   Concretizar a Encomenda.");
 		System.out.println("LLMB Localiza Lote Mais Barato.");
 		System.out.println();
 	}
@@ -299,7 +299,7 @@ public class Main {
 
 	private static void eae() {
 		System.out.println("Encomenda atual com " + order.size() + " lotes, num total de " + order.totalNumberOfItems()
-				+ " peças e totalizando o montante de " + order.totalPrice());
+						   + " peças e totalizando o montante de " + order.totalPrice());
 	}
 
 	private static void ce() {
@@ -325,7 +325,7 @@ public class Main {
 			} else {
 				double lower = Double.POSITIVE_INFINITY;
 				double price;
-				ClothingKind lowerKind = null;
+				IClothing lowerProd = null;
 				Iterator<IClothing> itr = clothes.iterator();
 
 				while (itr.hasNext()) {
@@ -342,11 +342,11 @@ public class Main {
 
 					if (price < lower) {
 						lower = price;
-						lowerKind = elem.pricingKind();
+						lowerProd = elem;
 					}
 				}
-				System.out.println("Para a quantidade especificada, o lote mais barato é: " + lowerKind);
-				System.out.println("Quantidade:" + quantidade + " corresponde a um custo total de " + lower);
+				System.out.println("Para a quantidade especificada, o lote mais barato é:\n" + lowerProd);
+				System.out.println("Quantidade: " + quantidade + " corresponde a um custo total de " + lower);
 
 			}
 

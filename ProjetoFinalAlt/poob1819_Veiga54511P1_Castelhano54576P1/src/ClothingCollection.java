@@ -26,10 +26,13 @@ public class ClothingCollection implements IClothingCollection {
 		clothes = new IClothing[DEFAULT_SIZE];
 	}
 	
-	public void add(IClothing elem) {			
-		if(isFull())
-			resize();
-		clothes[counter++] = elem; 
+	public void add(IClothing elem) {
+		if ( elem != null && !hasProduct(elem.getCode())) {
+			if(isFull())
+				resize();
+			clothes[counter++] = elem; 
+		}
+		
 	}
 	
 	private boolean isFull() {
